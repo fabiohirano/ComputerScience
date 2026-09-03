@@ -1,0 +1,86 @@
+/* ============================================================
+   Shared theme — Computer Science lesson resources
+   One palette + type system reused by every lesson page.
+   Edit the tokens below to re-brand every page at once.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,440;9..144,560;9..144,650&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root{
+  --paper:#efe9dc;
+  --paper-raised:#f8f4e9;
+  --ink:#242019;
+  --ink-soft:#655e4e;
+  --line:#d9cfb8;
+  --line-soft:#e6dec9;
+  --blue:#28587e;
+  --blue-soft:#dfe9ef;
+  --teal:#2c6f5e;
+  --teal-soft:#dcece5;
+  --gold:#93641b;
+  --gold-soft:#f0e2c3;
+  --plum:#6d4a79;
+  --plum-soft:#e9e0ec;
+  --rose:#94445a;
+  --rose-soft:#f0dfe3;
+  --green:#2c6f4a;
+  --green-soft:#dceee1;
+  --accent:#28587e;
+  --shadow: 0 1px 2px rgba(36,32,25,.06), 0 6px 20px -8px rgba(36,32,25,.18);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#1c1a16;
+    --paper-raised:#242019;
+    --ink:#efe7d6;
+    --ink-soft:#b7ab90;
+    --line:#3c362a;
+    --line-soft:#332e24;
+    --blue:#7fb2d8;
+    --blue-soft:#22323f;
+    --teal:#7fcdb2;
+    --teal-soft:#1d332c;
+    --gold:#e0b661;
+    --gold-soft:#3a2f18;
+    --plum:#cba7d8;
+    --plum-soft:#332a3a;
+    --rose:#e0a3b3;
+    --rose-soft:#3a232a;
+    --green:#8fd6ac;
+    --green-soft:#1c3226;
+    --accent:#7fb2d8;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 26px -10px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#1c1a16;
+  --paper-raised:#242019;
+  --ink:#efe7d6;
+  --ink-soft:#b7ab90;
+  --line:#3c362a;
+  --line-soft:#332e24;
+  --blue:#7fb2d8;
+  --blue-soft:#22323f;
+  --teal:#7fcdb2;
+  --teal-soft:#1d332c;
+  --gold:#e0b661;
+  --gold-soft:#3a2f18;
+  --plum:#cba7d8;
+  --plum-soft:#332a3a;
+  --rose:#e0a3b3;
+  --rose-soft:#3a232a;
+  --green:#8fd6ac;
+  --green-soft:#1c3226;
+  --accent:#7fb2d8;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 26px -10px rgba(0,0,0,.55);
+}
+
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size:16px;
+}
