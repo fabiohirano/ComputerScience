@@ -1,0 +1,763 @@
+<title>Declaring Variables</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,440;9..144,560;9..144,650&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root{
+  --paper:#efe9dc;
+  --paper-raised:#f8f4e9;
+  --ink:#242019;
+  --ink-soft:#655e4e;
+  --line:#d9cfb8;
+  --line-soft:#e6dec9;
+  --blue:#28587e;
+  --blue-soft:#dfe9ef;
+  --teal:#2c6f5e;
+  --teal-soft:#dcece5;
+  --gold:#93641b;
+  --gold-soft:#f0e2c3;
+  --plum:#6d4a79;
+  --plum-soft:#e9e0ec;
+  --rose:#94445a;
+  --rose-soft:#f0dfe3;
+  --accent:#28587e;
+  --shadow: 0 1px 2px rgba(36,32,25,.06), 0 6px 20px -8px rgba(36,32,25,.18);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#1c1a16;
+    --paper-raised:#242019;
+    --ink:#efe7d6;
+    --ink-soft:#b7ab90;
+    --line:#3c362a;
+    --line-soft:#332e24;
+    --blue:#7fb2d8;
+    --blue-soft:#22323f;
+    --teal:#7fcdb2;
+    --teal-soft:#1d332c;
+    --gold:#e0b661;
+    --gold-soft:#3a2f18;
+    --plum:#cba7d8;
+    --plum-soft:#332a3a;
+    --rose:#e0a3b3;
+    --rose-soft:#3a232a;
+    --accent:#7fb2d8;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 26px -10px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#1c1a16;
+  --paper-raised:#242019;
+  --ink:#efe7d6;
+  --ink-soft:#b7ab90;
+  --line:#3c362a;
+  --line-soft:#332e24;
+  --blue:#7fb2d8;
+  --blue-soft:#22323f;
+  --teal:#7fcdb2;
+  --teal-soft:#1d332c;
+  --gold:#e0b661;
+  --gold-soft:#3a2f18;
+  --plum:#cba7d8;
+  --plum-soft:#332a3a;
+  --rose:#e0a3b3;
+  --rose-soft:#3a232a;
+  --accent:#7fb2d8;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 26px -10px rgba(0,0,0,.55);
+}
+
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size:16px;
+}
+
+.app{
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+  max-width:920px;
+  margin:0 auto;
+  padding:0 22px;
+}
+
+/* ---------- top bar ---------- */
+.topbar{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:18px 0 12px;
+  flex-shrink:0;
+  border-bottom:1px solid var(--line);
+}
+.topbar .brand{
+  font-family:'Fraunces', Georgia, serif;
+  font-weight:650;
+  font-size:1.05rem;
+  letter-spacing:.01em;
+  white-space:nowrap;
+}
+.topbar .brand span{color:var(--accent);}
+.progress-track{
+  flex:1;
+  height:6px;
+  border-radius:99px;
+  background:var(--line-soft);
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  border-radius:99px;
+  background:var(--accent);
+  width:6.6%;
+  transition:width .35s ease;
+}
+.counter{
+  font-family:'JetBrains Mono', monospace;
+  font-size:.82rem;
+  color:var(--ink-soft);
+  white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+}
+
+/* ---------- stage ---------- */
+.stage{
+  flex:1;
+  overflow-y:auto;
+  padding:34px 2px 40px;
+  scrollbar-gutter:stable;
+}
+.slide{
+  animation:rise .38s ease both;
+}
+@media (prefers-reduced-motion:reduce){ .slide{animation:none;} }
+@keyframes rise{
+  from{opacity:0; transform:translateY(8px);}
+  to{opacity:1; transform:translateY(0);}
+}
+.eyebrow{
+  font-family:'JetBrains Mono', monospace;
+  font-size:.72rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin:0 0 10px;
+}
+h1.slide-title{
+  font-family:'Fraunces', Georgia, serif;
+  font-weight:650;
+  font-size:clamp(1.7rem, 3.6vw, 2.5rem);
+  line-height:1.1;
+  margin:0 0 18px;
+  text-wrap:balance;
+  max-width:19ch;
+}
+h2.section{
+  font-family:'Fraunces', Georgia, serif;
+  font-weight:600;
+  font-size:1.28rem;
+  margin:30px 0 12px;
+}
+p{
+  line-height:1.68;
+  max-width:65ch;
+  margin:0 0 15px;
+  color:var(--ink);
+}
+p.lead{
+  font-size:1.08rem;
+  color:var(--ink-soft);
+}
+strong{color:var(--ink); font-weight:600;}
+.max-measure{max-width:65ch;}
+
+/* ---------- code / syntax blocks ---------- */
+.code{
+  font-family:'JetBrains Mono', monospace;
+  font-size:.92rem;
+  background:var(--paper-raised);
+  border:1px solid var(--line);
+  border-left:4px solid var(--accent);
+  border-radius:10px;
+  padding:16px 18px;
+  margin:16px 0 20px;
+  box-shadow:var(--shadow);
+  overflow-x:auto;
+  white-space:pre;
+  line-height:1.7;
+}
+.code .c1{color:var(--ink-soft);}
+.code b{font-weight:600; color:var(--accent);}
+
+.kv{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:8px 18px;
+  margin:18px 0 22px;
+  padding:16px 18px;
+  background:var(--paper-raised);
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+.kv dt{
+  font-family:'JetBrains Mono', monospace;
+  font-size:.85rem;
+  font-weight:600;
+  background:var(--blue-soft);
+  color:var(--blue);
+  border-radius:6px;
+  padding:2px 8px;
+  align-self:start;
+  white-space:nowrap;
+}
+.kv dd{margin:0; line-height:1.6; padding-top:2px;}
+
+/* ---------- data type cards ---------- */
+.dt-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(150px,1fr));
+  gap:12px;
+  margin:18px 0 24px;
+}
+.dt-card{
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:14px 16px 16px;
+  background:var(--paper-raised);
+  box-shadow:var(--shadow);
+}
+.dt-card .name{
+  font-family:'Fraunces', Georgia, serif;
+  font-weight:650;
+  font-size:1.02rem;
+  margin-bottom:4px;
+}
+.dt-card .desc{font-size:.88rem; color:var(--ink-soft); line-height:1.5; margin-bottom:10px;}
+.dt-card .ex{
+  font-family:'JetBrains Mono', monospace;
+  font-size:.78rem;
+  display:inline-block;
+  padding:2px 7px;
+  border-radius:5px;
+  margin:0 4px 4px 0;
+}
+.dt-integer .name{color:var(--blue);} .dt-integer .ex{background:var(--blue-soft); color:var(--blue);}
+.dt-real .name{color:var(--teal);} .dt-real .ex{background:var(--teal-soft); color:var(--teal);}
+.dt-string .name{color:var(--gold);} .dt-string .ex{background:var(--gold-soft); color:var(--gold);}
+.dt-char .name{color:var(--plum);} .dt-char .ex{background:var(--plum-soft); color:var(--plum);}
+.dt-boolean .name{color:var(--rose);} .dt-boolean .ex{background:var(--rose-soft); color:var(--rose);}
+
+/* ---------- reason / info cards ---------- */
+.card-row{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(200px,1fr));
+  gap:14px;
+  margin:16px 0 22px;
+}
+.info-card{
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:16px 18px;
+  background:var(--paper-raised);
+}
+.info-card .h{
+  font-family:'Fraunces', Georgia, serif;
+  font-weight:600;
+  font-size:1.02rem;
+  margin-bottom:6px;
+  color:var(--accent);
+}
+.info-card p{font-size:.93rem; margin:0; max-width:none;}
+
+/* ---------- worked example ---------- */
+.task-box{
+  border:1px solid var(--line);
+  border-left:4px solid var(--gold);
+  background:var(--gold-soft);
+  border-radius:10px;
+  padding:12px 16px;
+  margin:14px 0 18px;
+  font-size:.95rem;
+}
+.task-box b{color:var(--gold);}
+.walkline{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:4px 14px;
+  align-items:start;
+  margin:4px 0 22px;
+}
+.walkline .ln{
+  font-family:'JetBrains Mono', monospace;
+  font-size:.8rem;
+  background:var(--paper-raised);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:2px 8px;
+  white-space:nowrap;
+}
+.walkline .expl{font-size:.93rem; color:var(--ink-soft); line-height:1.55; padding-top:2px;}
+
+/* ---------- comparison table ---------- */
+table.cmp{
+  width:100%;
+  border-collapse:collapse;
+  margin:16px 0 20px;
+  font-size:.93rem;
+}
+table.cmp th, table.cmp td{
+  border:1px solid var(--line);
+  padding:10px 14px;
+  text-align:left;
+}
+table.cmp th{
+  background:var(--paper-raised);
+  font-family:'Fraunces', Georgia, serif;
+  font-weight:600;
+}
+table.cmp td.var-col{color:var(--blue);}
+table.cmp td.const-col{color:var(--gold);}
+table.cmp code{font-family:'JetBrains Mono', monospace; font-size:.87rem;}
+
+/* ---------- glossary ---------- */
+.gloss{
+  display:grid;
+  gap:10px;
+  margin:16px 0 20px;
+}
+.gloss .term{
+  display:grid;
+  grid-template-columns:150px 1fr;
+  gap:14px;
+  padding:10px 0;
+  border-bottom:1px solid var(--line-soft);
+}
+.gloss .term:last-child{border-bottom:none;}
+.gloss .w{font-family:'Fraunces', Georgia, serif; font-weight:600; color:var(--ink);}
+.gloss .d{font-size:.93rem; color:var(--ink-soft); line-height:1.55;}
+
+/* ---------- checklist ---------- */
+.checklist{list-style:none; margin:16px 0 8px; padding:0; display:grid; gap:10px;}
+.checklist li{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  font-size:.98rem;
+  line-height:1.55;
+  padding:12px 14px;
+  background:var(--paper-raised);
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+.checklist li::before{
+  content:"";
+  flex-shrink:0;
+  width:18px; height:18px;
+  margin-top:2px;
+  border-radius:5px;
+  border:2px solid var(--accent);
+}
+
+/* ---------- box analogy diagram ---------- */
+.box-diagram{
+  display:flex;
+  align-items:center;
+  gap:22px;
+  margin:20px 0 24px;
+  flex-wrap:wrap;
+}
+.box-diagram svg{flex-shrink:0;}
+.box-diagram .cap{font-size:.9rem; color:var(--ink-soft); max-width:32ch; line-height:1.5;}
+
+/* ---------- title slide ---------- */
+.title-wrap{padding-top:6vh;}
+.title-wrap h1{
+  font-family:'Fraunces', Georgia, serif;
+  font-weight:650;
+  font-size:clamp(2.1rem, 5.6vw, 3.4rem);
+  line-height:1.05;
+  margin:6px 0 14px;
+  text-wrap:balance;
+  max-width:16ch;
+}
+.title-wrap .sub{font-size:1.12rem; color:var(--ink-soft); max-width:52ch; margin-bottom:28px;}
+.obj-box{
+  border:1px solid var(--line);
+  border-left:4px solid var(--accent);
+  background:var(--paper-raised);
+  border-radius:10px;
+  padding:18px 20px;
+  margin-bottom:20px;
+  max-width:60ch;
+}
+.obj-box .h{font-family:'Fraunces',serif; font-weight:600; margin-bottom:8px; font-size:1rem;}
+.howto{
+  font-size:.92rem;
+  color:var(--ink-soft);
+  border-top:1px dashed var(--line);
+  padding-top:16px;
+  max-width:60ch;
+}
+
+/* ---------- final slide ---------- */
+.final-banner{
+  font-family:'Fraunces', Georgia, serif;
+  font-weight:650;
+  font-size:clamp(1.6rem,4vw,2.2rem);
+  margin-bottom:10px;
+}
+
+/* ---------- controls ---------- */
+.controls{
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:14px 0 20px;
+  border-top:1px solid var(--line);
+}
+.navbtn{
+  font-family:'Source Sans 3', sans-serif;
+  font-weight:600;
+  font-size:.92rem;
+  color:var(--ink);
+  background:var(--paper-raised);
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:10px 16px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.navbtn:hover:not(:disabled){box-shadow:var(--shadow); transform:translateY(-1px);}
+.navbtn:active:not(:disabled){transform:translateY(0);}
+.navbtn:disabled{opacity:.35; cursor:default;}
+.navbtn:focus-visible, .dot:focus-visible, .navbtn.primary:focus-visible{
+  outline:2px solid var(--accent); outline-offset:2px;
+}
+.navbtn.primary{background:var(--accent); color:var(--paper); border-color:var(--accent);}
+.dots{display:flex; gap:6px; flex-wrap:wrap; justify-content:center;}
+.dot{
+  width:8px; height:8px; border-radius:50%;
+  background:var(--line);
+  border:none; padding:0; cursor:pointer;
+}
+.dot[aria-current="true"]{background:var(--accent); width:20px; border-radius:99px;}
+.kbd-hint{font-size:.78rem; color:var(--ink-soft); font-family:'JetBrains Mono',monospace;}
+
+@media (max-width:600px){
+  .dots{display:none;}
+  .kv{grid-template-columns:1fr;}
+  .walkline{grid-template-columns:1fr;}
+  .gloss .term{grid-template-columns:1fr;}
+}
+</style>
+
+<div class="app">
+  <div class="topbar">
+    <div class="brand"><span>&lt;/&gt;</span> Declaring Variables</div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="counter" id="counter">01 / 15</div>
+  </div>
+
+  <main class="stage" id="stage">
+
+    <!-- 1 -->
+    <section class="slide" data-title="Welcome">
+      <div class="title-wrap">
+        <p class="eyebrow">Computer Science &middot; Pseudocode</p>
+        <h1>Declaring Variables &amp; Constants in Pseudocode</h1>
+        <p class="sub">A self-paced guide to storing information in your programs — what a variable is, how to declare one with the correct data type, and when to use a constant instead.</p>
+        <div class="obj-box">
+          <div class="h">By the end of this guide, you will be able to:</div>
+          <p style="margin-bottom:6px">declare a variable using the correct keyword and data type; choose between <b>INTEGER</b>, <b>REAL</b>, <b>STRING</b>, <b>CHAR</b> and <b>BOOLEAN</b> depending on what you need to store; assign a value to a variable using the assignment symbol; and declare a constant for a value that should never change.</p>
+        </div>
+        <p class="howto"><strong>How to use this guide:</strong> work through the cards in order using the "Next" button below or the arrow keys on your keyboard. Each card builds on the one before it, so try not to skip ahead. Whenever you see a shaded code box, copy it onto paper and say each line aloud before moving on — this is the fastest way to make the syntax stick. When you reach the end, complete the accompanying worksheet on your own.</p>
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section class="slide" data-title="What is a Variable?">
+      <p class="eyebrow">1 &middot; Foundations</p>
+      <h1 class="slide-title">What Is a Variable?</h1>
+      <p class="lead">A <strong>variable</strong> is a named location in a computer's memory where a program can store a single piece of information while it runs.</p>
+      <p>Think of a variable as a labelled box. The label on the outside — the variable's <em>name</em> — tells you, and the computer, what the box is for. Unlike the label, the contents of the box are not fixed: a program can put a value in, read it, and later replace it with a different value, all while the program is running. That is the entire point of a variable — it is a container whose contents are allowed to <strong>vary</strong>.</p>
+      <div class="box-diagram">
+        <svg width="150" height="130" viewBox="0 0 150 130" role="img" aria-label="A labelled box named Age, holding the value 15, with an arrow showing a new value 16 about to replace it">
+          <rect x="20" y="46" width="90" height="66" rx="8" fill="var(--paper-raised)" stroke="var(--blue)" stroke-width="2.5"/>
+          <rect x="20" y="46" width="90" height="24" rx="8" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2.5"/>
+          <text x="65" y="62" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="600" font-size="13" fill="var(--blue)">Age</text>
+          <text x="65" y="96" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="20" fill="var(--ink)">15</text>
+          <path d="M118 79 L140 79" stroke="var(--ink-soft)" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="129" y="72" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="var(--ink-soft)">later&#8230;</text>
+          <text x="140" y="96" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="16" fill="var(--ink-soft)">16</text>
+          <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--ink-soft)"/></marker></defs>
+        </svg>
+        <p class="cap">The box keeps the label <code style="font-family:'JetBrains Mono',monospace">Age</code>, but the value inside can be replaced the next time the program runs a line that changes it — for example, on a birthday.</p>
+      </div>
+      <p>Every variable has three things associated with it: a <strong>name</strong>, so your code can refer to it; a <strong>data type</strong>, so the computer knows what kind of value it is allowed to hold; and a <strong>value</strong>, which is whatever is currently stored inside. Before you can use a variable in pseudocode, you must first <em>declare</em> it — the next card shows you exactly how.</p>
+    </section>
+
+    <!-- 3 -->
+    <section class="slide" data-title="Declaring a Variable">
+      <p class="eyebrow">1 &middot; Foundations</p>
+      <h1 class="slide-title">Declaring a Variable</h1>
+      <p class="lead">Declaring a variable is how you tell the computer "create this box, give it this name, and only ever let it hold this kind of value."</p>
+      <p>In pseudocode, a declaration always follows the same pattern:</p>
+      <div class="code">DECLARE &lt;variable name&gt; : &lt;data type&gt;</div>
+      <dl class="kv">
+        <dt>DECLARE</dt><dd>the keyword that tells the reader (and, in a real program, the computer) that a new variable is being created here for the first time.</dd>
+        <dt>&lt;variable name&gt;</dt><dd>the label you choose for the box — for example <code style="font-family:'JetBrains Mono',monospace">Age</code> or <code style="font-family:'JetBrains Mono',monospace">Name</code>. Pick a name that describes what the variable stores.</dd>
+        <dt>&lt;data type&gt;</dt><dd>tells the computer exactly what kind of value the variable is allowed to hold, such as a whole number or a piece of text. You will meet all five data types on the next card.</dd>
+      </dl>
+      <p>Notice that a declaration on its own does not put anything inside the box yet — it only creates the box and labels it. Giving the box an actual value is a separate step called <em>assignment</em>, which you will meet in a couple of cards' time.</p>
+    </section>
+
+    <!-- 4 -->
+    <section class="slide" data-title="Data Types">
+      <p class="eyebrow">1 &middot; Foundations</p>
+      <h1 class="slide-title">What Are Data Types?</h1>
+      <p class="lead">A data type defines the kind of information that a variable is allowed to store.</p>
+      <p>Computers treat numbers, text and true/false values very differently in memory, so every variable must be given a data type when it is declared. This also helps <em>you</em>: naming the type up front stops you from accidentally trying to store a name inside a variable meant for a number. Pseudocode uses five common data types:</p>
+      <div class="dt-grid">
+        <div class="dt-card dt-integer"><div class="name">INTEGER</div><div class="desc">Whole numbers, with no decimal part. Can be positive, negative or zero.</div><span class="ex">10</span><span class="ex">-5</span><span class="ex">0</span></div>
+        <div class="dt-card dt-real"><div class="name">REAL</div><div class="desc">Numbers with decimals — used whenever precision beyond a whole number matters.</div><span class="ex">3.14</span><span class="ex">-7.5</span></div>
+        <div class="dt-card dt-string"><div class="name">STRING</div><div class="desc">A sequence of characters — any piece of text, held inside quotation marks.</div><span class="ex">"Hello"</span><span class="ex">"John123"</span></div>
+        <div class="dt-card dt-char"><div class="name">CHAR</div><div class="desc">A single character only — one letter, digit or symbol.</div><span class="ex">'A'</span><span class="ex">'7'</span><span class="ex">'$'</span></div>
+        <div class="dt-card dt-boolean"><div class="name">BOOLEAN</div><div class="desc">A logical value — there are only ever two possibilities.</div><span class="ex">TRUE</span><span class="ex">FALSE</span></div>
+      </div>
+      <p>Look carefully at the difference between <strong>STRING</strong> and <strong>CHAR</strong>: a CHAR can only ever hold one single character, while a STRING can hold many characters strung together — even an entire sentence. If you are ever unsure which to use, ask yourself: "could this value ever need more than one character?" If yes, use STRING.</p>
+    </section>
+
+    <!-- 5 -->
+    <section class="slide" data-title="Assigning a Value">
+      <p class="eyebrow">2 &middot; Putting Values In</p>
+      <h1 class="slide-title">Assigning a Value</h1>
+      <p class="lead">Declaring a variable creates an empty, labelled box. <strong>Assignment</strong> is the step that actually puts a value inside it.</p>
+      <p>To assign a value, write the variable's name, followed by the assignment symbol <code style="font-family:'JetBrains Mono',monospace;font-weight:600">&larr;</code>, followed by the value you want stored. You can read the arrow as "is set to" or "becomes":</p>
+      <div class="code">&lt;variable name&gt; <b>&larr;</b> &lt;value&gt;</div>
+      <p>Putting the two steps together, a complete example looks like this:</p>
+      <div class="code">DECLARE Age : INTEGER
+Age <b>&larr;</b> 15</div>
+      <p>The first line creates a box named <code style="font-family:'JetBrains Mono',monospace">Age</code> that is only allowed to hold whole numbers. The second line puts the value <code style="font-family:'JetBrains Mono',monospace">15</code> inside it. Because <code style="font-family:'JetBrains Mono',monospace">Age</code> is a variable and not a constant, a later line could reassign it — for example <code style="font-family:'JetBrains Mono',monospace">Age &larr; Age + 1</code> would replace the value with one more than whatever it currently holds. This is exactly what makes a variable different from a constant, which you will meet later in this guide.</p>
+    </section>
+
+    <!-- 6 -->
+    <section class="slide" data-title="Displaying Output">
+      <p class="eyebrow">2 &middot; Putting Values In</p>
+      <h1 class="slide-title">Displaying a Result with OUTPUT</h1>
+      <p class="lead">Storing a value is only useful if your program can eventually show it to the user. That is the job of the <strong>OUTPUT</strong> command.</p>
+      <p><code style="font-family:'JetBrains Mono',monospace">OUTPUT</code> displays whatever follows it on the screen. You can output a piece of literal text in quotation marks, the value stored in a variable, or — very commonly — both together, separated by a comma:</p>
+      <div class="code">OUTPUT "The age is ", Age</div>
+      <p>If <code style="font-family:'JetBrains Mono',monospace">Age</code> currently holds <code style="font-family:'JetBrains Mono',monospace">15</code>, this line displays exactly: <code style="font-family:'JetBrains Mono',monospace">The age is 15</code>. The quoted text is printed exactly as written, and the comma tells the computer "now print whatever this variable currently contains" straight after it. You will use this pattern constantly in the worked examples on the next few cards.</p>
+    </section>
+
+    <!-- 7 -->
+    <section class="slide" data-title="Worked Example: INTEGER">
+      <p class="eyebrow">3 &middot; Worked Examples</p>
+      <h1 class="slide-title">Worked Example — an INTEGER Variable</h1>
+      <div class="task-box"><b>Task:</b> Write pseudocode to declare an integer variable and assign it the value 15. Output the stored value.</div>
+      <div class="code">DECLARE Age: INTEGER
+Age &larr; 15
+OUTPUT "The age is ", Age</div>
+      <h2 class="section">Line by line</h2>
+      <div class="walkline">
+        <span class="ln">Line 1</span><span class="expl">Declares a new variable called <code style="font-family:'JetBrains Mono',monospace">Age</code> and restricts it to whole numbers only, using the <code style="font-family:'JetBrains Mono',monospace">INTEGER</code> data type.</span>
+        <span class="ln">Line 2</span><span class="expl">Assigns the value <code style="font-family:'JetBrains Mono',monospace">15</code> to <code style="font-family:'JetBrains Mono',monospace">Age</code>, using the assignment symbol.</span>
+        <span class="ln">Line 3</span><span class="expl">Outputs the literal text <code style="font-family:'JetBrains Mono',monospace">"The age is "</code> immediately followed by whatever value <code style="font-family:'JetBrains Mono',monospace">Age</code> currently holds — displaying <code style="font-family:'JetBrains Mono',monospace">The age is 15</code>.</span>
+      </div>
+    </section>
+
+    <!-- 8 -->
+    <section class="slide" data-title="Worked Example: REAL">
+      <p class="eyebrow">3 &middot; Worked Examples</p>
+      <h1 class="slide-title">Worked Example — a REAL Variable</h1>
+      <div class="task-box"><b>Task:</b> Write pseudocode to declare a real variable and assign it the value 4.5. Output the stored value.</div>
+      <div class="code">DECLARE Temperature: REAL
+Temperature &larr; 4.5
+OUTPUT "The temperature is ", Temperature</div>
+      <p>The pattern is identical to the INTEGER example — only the data type changes. <strong>REAL</strong> is chosen here instead of INTEGER because a temperature reading needs a decimal point to be accurate; declaring it as INTEGER would not allow the <code style="font-family:'JetBrains Mono',monospace">.5</code> to be stored correctly. Whenever a quantity might need decimal precision — money, measurements, averages — reach for REAL rather than INTEGER.</p>
+    </section>
+
+    <!-- 9 -->
+    <section class="slide" data-title="Worked Example: STRING">
+      <p class="eyebrow">3 &middot; Worked Examples</p>
+      <h1 class="slide-title">Worked Example — a STRING Variable</h1>
+      <div class="task-box"><b>Task:</b> Write pseudocode to declare a string variable and assign it the value "John". Output the stored value.</div>
+      <div class="code">DECLARE Name: STRING
+Name &larr; "John"
+OUTPUT "The name is ", Name</div>
+      <p>Because text is being stored, the data type is <strong>STRING</strong> and the value being assigned is wrapped in quotation marks — <code style="font-family:'JetBrains Mono',monospace">"John"</code> rather than <code style="font-family:'JetBrains Mono',monospace">John</code>. The quotation marks are part of the pseudocode syntax, not part of the stored text itself: they simply mark where the string begins and ends, in exactly the same way that quotation marks mark the literal text inside an <code style="font-family:'JetBrains Mono',monospace">OUTPUT</code> statement.</p>
+    </section>
+
+    <!-- 10 -->
+    <section class="slide" data-title="What is a Constant?">
+      <p class="eyebrow">4 &middot; Constants</p>
+      <h1 class="slide-title">What Is a Constant?</h1>
+      <p class="lead">A <strong>constant</strong> is a special kind of variable. Once you give it a value, that value <strong>never changes</strong> for as long as the program is running.</p>
+      <p>Think back to the labelled box from earlier: a constant is a box that gets sealed shut the moment a value is placed inside it. You can still read what's in the box any time you like, but no line of the program is ever allowed to swap it for something else. Some real-world values are constant by their very nature — they would not make sense as ordinary, changeable variables:</p>
+      <div class="card-row">
+        <div class="info-card"><div class="h">Hours in a day</div><p>Always 24. No calculation in your program should ever cause this to become a different number.</p></div>
+        <div class="info-card"><div class="h">The value of Pi (&pi;)</div><p>Always approximately 3.14159. It is a mathematical fact, not something a program calculates or changes.</p></div>
+      </div>
+      <p>Values like these are "perfect for constants" precisely because there is never a legitimate reason for them to change while the program runs.</p>
+    </section>
+
+    <!-- 11 -->
+    <section class="slide" data-title="Why Use Constants?">
+      <p class="eyebrow">4 &middot; Constants</p>
+      <h1 class="slide-title">Why Use Constants?</h1>
+      <p class="lead">It would be technically possible to use an ordinary variable everywhere instead of a constant — so why bother with a separate keyword at all?</p>
+      <div class="card-row">
+        <div class="info-card"><div class="h">Easy to update</div><p>If a fixed value needs to change in the future, you only have to update it in the one place where the constant is declared, instead of hunting through the whole program.</p></div>
+        <div class="info-card"><div class="h">Avoid mistakes</div><p>Because a constant's value is locked, you can't accidentally overwrite it somewhere else in the code — which keeps your program's results accurate and predictable.</p></div>
+        <div class="info-card"><div class="h">Improves readability</div><p>A well-chosen, descriptive constant name makes your pseudocode easier for anyone — including you, later on — to read and understand at a glance.</p></div>
+      </div>
+      <p>In short: use a constant whenever a value is fixed and meaningful, and reserve ordinary variables for anything that is genuinely expected to change while the program runs.</p>
+    </section>
+
+    <!-- 12 -->
+    <section class="slide" data-title="Declaring a Constant">
+      <p class="eyebrow">4 &middot; Constants</p>
+      <h1 class="slide-title">How to Write a Constant</h1>
+      <p class="lead">A constant is declared and given its value in a single line — unlike a variable, there is no separate declare-then-assign step.</p>
+      <div class="code">CONSTANT &lt;Identifier&gt; &larr; &lt;Value&gt;</div>
+      <dl class="kv">
+        <dt>CONSTANT</dt><dd>the keyword that tells the reader this value is fixed and will never change — this is what makes a constant different from <code style="font-family:'JetBrains Mono',monospace">DECLARE</code>.</dd>
+        <dt>&lt;Identifier&gt;</dt><dd>the name of the constant. By convention it is written in <strong>Pascal Case</strong> — each word capitalised with no spaces, such as <code style="font-family:'JetBrains Mono',monospace">HoursInDay</code>.</dd>
+        <dt>&larr;</dt><dd>the same assignment symbol used for variables — it means "is set to".</dd>
+        <dt>&lt;Value&gt;</dt><dd>the fixed value being stored, written immediately after the arrow.</dd>
+      </dl>
+      <h2 class="section">Examples</h2>
+      <div class="dt-grid">
+        <div class="dt-card dt-real"><div class="name" style="font-size:.92rem">Hours in a day</div><div class="ex" style="display:block;width:fit-content;margin-top:6px">CONSTANT HoursInDay &larr; 24</div></div>
+        <div class="dt-card dt-real"><div class="name" style="font-size:.92rem">Maximum game score</div><div class="ex" style="display:block;width:fit-content;margin-top:6px">CONSTANT MaxScore &larr; 100</div></div>
+        <div class="dt-card dt-real"><div class="name" style="font-size:.92rem">Price of a bus ticket</div><div class="ex" style="display:block;width:fit-content;margin-top:6px">CONSTANT TicketPrice &larr; 5.50</div></div>
+      </div>
+    </section>
+
+    <!-- 13 -->
+    <section class="slide" data-title="Variables vs Constants">
+      <p class="eyebrow">4 &middot; Constants</p>
+      <h1 class="slide-title">Variables vs. Constants — a Quick Comparison</h1>
+      <p class="lead">Now that you have met both, it is worth holding them side by side so the difference is completely clear.</p>
+      <table class="cmp">
+        <tr><th></th><th>Variable</th><th>Constant</th></tr>
+        <tr><td>Keyword</td><td class="var-col"><code>DECLARE</code></td><td class="const-col"><code>CONSTANT</code></td></tr>
+        <tr><td>Can the value change while the program runs?</td><td class="var-col">Yes</td><td class="const-col">No — fixed forever</td></tr>
+        <tr><td>Declared and assigned...</td><td class="var-col">in two separate lines</td><td class="const-col">in a single line</td></tr>
+        <tr><td>Naming style</td><td class="var-col">Pascal Case, e.g. <code>Age</code></td><td class="const-col">Pascal Case, e.g. <code>MaxScore</code></td></tr>
+        <tr><td>Example</td><td class="var-col"><code>DECLARE Age : INTEGER</code></td><td class="const-col"><code>CONSTANT MaxScore &larr; 100</code></td></tr>
+      </table>
+      <p>A useful rule of thumb: if you catch yourself asking "will this value ever need to be updated while the program is running?" — answer yes, and it belongs in a variable; answer no, and it belongs in a constant.</p>
+    </section>
+
+    <!-- 14 -->
+    <section class="slide" data-title="Key Vocabulary">
+      <p class="eyebrow">5 &middot; Recap</p>
+      <h1 class="slide-title">Key Vocabulary Recap</h1>
+      <p class="lead">Before you move on to the worksheet, check that you can explain each of these terms in your own words.</p>
+      <div class="gloss">
+        <div class="term"><span class="w">Variable</span><span class="d">A named location in memory that stores a value which is allowed to change while the program runs.</span></div>
+        <div class="term"><span class="w">Constant</span><span class="d">A named value that is fixed once declared and can never change while the program runs.</span></div>
+        <div class="term"><span class="w">Data type</span><span class="d">Defines what kind of value a variable may store — INTEGER, REAL, STRING, CHAR or BOOLEAN.</span></div>
+        <div class="term"><span class="w">Declare</span><span class="d">To create a new variable, giving it a name and a data type, using the <code style="font-family:'JetBrains Mono',monospace">DECLARE</code> keyword.</span></div>
+        <div class="term"><span class="w">Assign</span><span class="d">To store a value inside a variable or constant, using the assignment symbol <code style="font-family:'JetBrains Mono',monospace">&larr;</code>.</span></div>
+        <div class="term"><span class="w">Identifier</span><span class="d">The chosen name of a variable or constant, such as <code style="font-family:'JetBrains Mono',monospace">Age</code> or <code style="font-family:'JetBrains Mono',monospace">MaxScore</code>.</span></div>
+        <div class="term"><span class="w">Pascal Case</span><span class="d">A naming style where every word in an identifier starts with a capital letter and there are no spaces, e.g. <code style="font-family:'JetBrains Mono',monospace">TicketPrice</code>.</span></div>
+        <div class="term"><span class="w">OUTPUT</span><span class="d">The command used to display text and variable values on the screen.</span></div>
+      </div>
+    </section>
+
+    <!-- 15 -->
+    <section class="slide" data-title="Well Done">
+      <p class="eyebrow">5 &middot; Recap</p>
+      <div class="final-banner">You've reached the end of this guide.</div>
+      <p class="lead">You now know how to declare variables and constants, choose the correct data type, assign values, and display results with OUTPUT.</p>
+      <h2 class="section">Before you close this page, can you...</h2>
+      <ul class="checklist">
+        <li>Explain, in your own words, the difference between a variable and a constant?</li>
+        <li>Choose the correct data type — INTEGER, REAL, STRING, CHAR or BOOLEAN — for a given piece of information?</li>
+        <li>Write a correct <code style="font-family:'JetBrains Mono',monospace">DECLARE</code> statement and then assign it a value on the next line?</li>
+        <li>Write a correct <code style="font-family:'JetBrains Mono',monospace">CONSTANT</code> statement in a single line, using Pascal Case?</li>
+        <li>Write an <code style="font-family:'JetBrains Mono',monospace">OUTPUT</code> statement that combines literal text with a variable's value?</li>
+      </ul>
+      <p style="margin-top:22px"><strong>Next step:</strong> open your worksheet and work through the practice questions on your own. Try writing your pseudocode on paper before checking it against what you learned in this guide — if you get stuck, come back and re-read the relevant card.</p>
+    </section>
+
+  </main>
+
+  <footer class="controls">
+    <button class="navbtn" id="prevBtn" aria-label="Previous card">&larr; Back</button>
+    <div class="dots" id="dots" role="tablist" aria-label="Slide navigation"></div>
+    <button class="navbtn primary" id="nextBtn" aria-label="Next card">Next &rarr;</button>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var stage = document.getElementById('stage');
+  var counter = document.getElementById('counter');
+  var progressFill = document.getElementById('progressFill');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var dotsWrap = document.getElementById('dots');
+  var total = slides.length;
+  var idx = 0;
+
+  slides.forEach(function(s, i){
+    var d = document.createElement('button');
+    d.className = 'dot';
+    d.type = 'button';
+    d.setAttribute('role','tab');
+    d.setAttribute('aria-label', 'Go to card ' + (i+1) + ': ' + (s.getAttribute('data-title')||''));
+    d.addEventListener('click', function(){ go(i); });
+    dotsWrap.appendChild(d);
+  });
+  var dots = Array.prototype.slice.call(dotsWrap.children);
+
+  function pad(n){ return n < 10 ? '0'+n : ''+n; }
+
+  function render(){
+    slides.forEach(function(s, i){ s.hidden = (i !== idx); });
+    counter.textContent = pad(idx+1) + ' / ' + pad(total);
+    progressFill.style.width = (((idx+1)/total)*100) + '%';
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx === total-1;
+    nextBtn.textContent = idx === total-1 ? 'Finished' : 'Next →';
+    dots.forEach(function(d,i){ d.setAttribute('aria-current', i===idx ? 'true' : 'false'); });
+    stage.scrollTop = 0;
+    try{ localStorage.setItem('varlesson-idx', String(idx)); }catch(e){}
+  }
+
+  function go(i){
+    idx = Math.max(0, Math.min(total-1, i));
+    render();
+  }
+
+  prevBtn.addEventListener('click', function(){ go(idx-1); });
+  nextBtn.addEventListener('click', function(){ go(idx+1); });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowRight'){ go(idx+1); }
+    else if(e.key === 'ArrowLeft'){ go(idx-1); }
+    else if(e.key === 'Home'){ go(0); }
+    else if(e.key === 'End'){ go(total-1); }
+  });
+
+  var saved = 0;
+  try{
+    var v = parseInt(localStorage.getItem('varlesson-idx'), 10);
+    if(!isNaN(v) && v >= 0 && v < total) saved = v;
+  }catch(e){}
+  idx = saved;
+  render();
+})();
+</script>

@@ -1,0 +1,476 @@
+<title>Variables Practice</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,440;9..144,560;9..144,650&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root{
+  --paper:#efe9dc;
+  --paper-raised:#f8f4e9;
+  --ink:#242019;
+  --ink-soft:#655e4e;
+  --line:#d9cfb8;
+  --line-soft:#e6dec9;
+  --blue:#28587e;
+  --blue-soft:#dfe9ef;
+  --teal:#2c6f5e;
+  --teal-soft:#dcece5;
+  --gold:#93641b;
+  --gold-soft:#f0e2c3;
+  --plum:#6d4a79;
+  --plum-soft:#e9e0ec;
+  --rose:#94445a;
+  --rose-soft:#f0dfe3;
+  --green:#2c6f4a;
+  --green-soft:#dceee1;
+  --accent:#28587e;
+  --shadow: 0 1px 2px rgba(36,32,25,.06), 0 6px 20px -8px rgba(36,32,25,.18);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#1c1a16; --paper-raised:#242019; --ink:#efe7d6; --ink-soft:#b7ab90;
+    --line:#3c362a; --line-soft:#332e24;
+    --blue:#7fb2d8; --blue-soft:#22323f;
+    --teal:#7fcdb2; --teal-soft:#1d332c;
+    --gold:#e0b661; --gold-soft:#3a2f18;
+    --plum:#cba7d8; --plum-soft:#332a3a;
+    --rose:#e0a3b3; --rose-soft:#3a232a;
+    --green:#8fd6ac; --green-soft:#1c3226;
+    --accent:#7fb2d8;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 26px -10px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#1c1a16; --paper-raised:#242019; --ink:#efe7d6; --ink-soft:#b7ab90;
+  --line:#3c362a; --line-soft:#332e24;
+  --blue:#7fb2d8; --blue-soft:#22323f;
+  --teal:#7fcdb2; --teal-soft:#1d332c;
+  --gold:#e0b661; --gold-soft:#3a2f18;
+  --plum:#cba7d8; --plum-soft:#332a3a;
+  --rose:#e0a3b3; --rose-soft:#3a232a;
+  --green:#8fd6ac; --green-soft:#1c3226;
+  --accent:#7fb2d8;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 26px -10px rgba(0,0,0,.55);
+}
+
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size:16px;
+}
+.wrap{max-width:840px; margin:0 auto; padding:0 22px 80px;}
+
+/* top bar (sticky) */
+.topbar{
+  position:sticky; top:0; z-index:5;
+  background:var(--paper);
+  border-bottom:1px solid var(--line);
+  padding:16px 0 12px;
+  display:flex; align-items:center; gap:16px;
+  backdrop-filter:blur(6px);
+}
+.topbar .brand{font-family:'Fraunces',Georgia,serif; font-weight:650; font-size:1.02rem; white-space:nowrap;}
+.topbar .brand span{color:var(--accent);}
+.progress-track{flex:1; height:6px; border-radius:99px; background:var(--line-soft); overflow:hidden;}
+.progress-fill{height:100%; background:var(--accent); width:0%; border-radius:99px; transition:width .3s ease;}
+.progress-label{font-family:'JetBrains Mono',monospace; font-size:.78rem; color:var(--ink-soft); white-space:nowrap; font-variant-numeric:tabular-nums;}
+
+/* header */
+.header{padding:30px 0 10px;}
+.eyebrow{font-family:'JetBrains Mono',monospace; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin:0 0 8px;}
+h1{font-family:'Fraunces',Georgia,serif; font-weight:650; font-size:clamp(1.7rem,4vw,2.35rem); line-height:1.08; margin:0 0 12px; text-wrap:balance;}
+.sub{font-size:1.02rem; color:var(--ink-soft); max-width:60ch; margin:0 0 18px; line-height:1.6;}
+
+.howto{
+  border:1px solid var(--line); border-left:4px solid var(--accent);
+  background:var(--paper-raised); border-radius:10px;
+  padding:14px 18px; margin:0 0 24px; font-size:.92rem; line-height:1.6; max-width:66ch;
+}
+.howto b{color:var(--accent);}
+
+/* reference box */
+details.ref{
+  border:1px solid var(--line); border-radius:12px; background:var(--paper-raised);
+  margin:0 0 30px; box-shadow:var(--shadow); overflow:hidden;
+}
+details.ref summary{
+  cursor:pointer; padding:13px 18px; font-family:'Fraunces',Georgia,serif; font-weight:600;
+  font-size:.98rem; list-style:none; display:flex; align-items:center; gap:8px;
+}
+details.ref summary::-webkit-details-marker{display:none;}
+details.ref summary::before{content:"▸"; color:var(--accent); transition:transform .15s ease; font-size:.8em;}
+details.ref[open] summary::before{transform:rotate(90deg);}
+.ref-body{padding:2px 18px 18px;}
+.ref-code{font-family:'JetBrains Mono',monospace; font-size:.88rem; line-height:1.9;}
+.ref-code b{color:var(--accent);}
+.ref-code .g{color:var(--gold);}
+.dt-row{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;}
+.dt-chip{font-family:'JetBrains Mono',monospace; font-size:.78rem; padding:4px 10px; border-radius:7px; font-weight:600;}
+.dt-chip.i{background:var(--blue-soft); color:var(--blue);}
+.dt-chip.r{background:var(--teal-soft); color:var(--teal);}
+.dt-chip.s{background:var(--gold-soft); color:var(--gold);}
+.dt-chip.c{background:var(--plum-soft); color:var(--plum);}
+.dt-chip.b{background:var(--rose-soft); color:var(--rose);}
+
+/* part sections */
+.part-heading{
+  font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:1.4rem;
+  margin:38px 0 6px; padding-bottom:10px; border-bottom:2px solid var(--accent-part, var(--accent));
+  display:flex; align-items:baseline; gap:10px;
+}
+.part-heading .n{font-size:.75rem; font-family:'JetBrains Mono',monospace; color:var(--ink-soft); font-weight:500;}
+.part-intro{color:var(--ink-soft); font-size:.94rem; margin:0 0 18px; max-width:64ch; line-height:1.6;}
+
+/* mini data-type check row */
+.dtq{
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  padding:12px 16px; margin-bottom:10px;
+  border:1px solid var(--line); border-radius:10px; background:var(--paper-raised);
+}
+.dtq .val{font-family:'JetBrains Mono',monospace; font-weight:600; font-size:.98rem; min-width:130px;}
+.dtq select{
+  font-family:'Source Sans 3',sans-serif; font-size:.9rem; padding:6px 10px; border-radius:7px;
+  border:1px solid var(--line); background:var(--paper); color:var(--ink);
+}
+.dtq .fb{font-family:'JetBrains Mono',monospace; font-size:.85rem; font-weight:600; margin-left:auto;}
+.dtq .fb.correct{color:var(--green);}
+.dtq .fb.wrong{color:var(--rose);}
+
+/* question card */
+.q-card{
+  border:1px solid var(--line); border-radius:14px; background:var(--paper-raised);
+  padding:20px 22px; margin-bottom:18px; box-shadow:var(--shadow);
+  transition:border-color .2s ease;
+}
+.q-card.done{border-color:var(--green);}
+.q-head{display:flex; gap:12px; align-items:flex-start; margin-bottom:4px;}
+.q-num{
+  font-family:'Fraunces',Georgia,serif; font-weight:650; font-size:1.05rem;
+  color:var(--accent); flex-shrink:0; min-width:22px;
+}
+.q-text{font-size:1rem; line-height:1.6;}
+.q-sub{margin:8px 0 0 34px; padding-left:0;}
+.q-sub li{font-size:.94rem; line-height:1.6; margin-bottom:3px; color:var(--ink);}
+.q-hint{margin:8px 0 0 34px; font-size:.85rem; font-style:italic; color:var(--ink-soft);}
+
+textarea.ans{
+  width:100%; margin-top:14px; font-family:'JetBrains Mono',monospace; font-size:.92rem;
+  background:var(--paper); border:1px solid var(--line); border-radius:9px;
+  padding:12px 14px; color:var(--ink); resize:vertical; min-height:76px; line-height:1.6;
+}
+textarea.ans:focus{outline:2px solid var(--accent); outline-offset:1px;}
+
+.q-actions{display:flex; align-items:center; gap:10px; margin-top:12px; flex-wrap:wrap;}
+.reveal-btn{
+  font-family:'Source Sans 3',sans-serif; font-weight:600; font-size:.88rem;
+  background:var(--accent); color:var(--paper); border:none; border-radius:8px;
+  padding:9px 16px; cursor:pointer; display:inline-flex; align-items:center; gap:6px;
+}
+.reveal-btn:hover{filter:brightness(1.08);}
+.reveal-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+.try-note{font-size:.8rem; color:var(--ink-soft);}
+
+.answer-panel{
+  margin-top:14px; padding:14px 16px; border-radius:9px;
+  background:var(--green-soft); border-left:4px solid var(--green);
+  font-family:'JetBrains Mono',monospace; font-size:.9rem; line-height:1.75; white-space:pre-wrap;
+}
+.answer-panel .lbl{
+  display:block; font-family:'Source Sans 3',sans-serif; font-weight:700; font-size:.72rem;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--green); margin-bottom:6px;
+}
+.answer-panel.prose{font-family:'Source Sans 3',sans-serif; white-space:normal;}
+
+/* part accent overrides */
+#partA{--accent-part:var(--blue);}
+#partB{--accent-part:var(--blue);}
+#partC{--accent-part:var(--gold);}
+#partD{--accent-part:var(--plum);}
+#partC .q-num, #partC .reveal-btn{ }
+#partC .reveal-btn{background:var(--gold);}
+#partD .reveal-btn{background:var(--plum);}
+
+/* bottom controls */
+.finish{
+  margin-top:40px; padding:22px; border-radius:14px; text-align:center;
+  background:var(--paper-raised); border:1px solid var(--line);
+}
+.finish h2{font-family:'Fraunces',Georgia,serif; font-size:1.2rem; margin:0 0 8px;}
+.finish p{color:var(--ink-soft); font-size:.92rem; margin:0 0 16px;}
+.util-row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
+.util-btn{
+  font-family:'Source Sans 3',sans-serif; font-weight:600; font-size:.86rem;
+  background:var(--paper); color:var(--ink); border:1px solid var(--line); border-radius:8px;
+  padding:9px 15px; cursor:pointer;
+}
+.util-btn:hover{box-shadow:var(--shadow);}
+.util-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+
+@media (max-width:560px){
+  .q-sub, .q-hint{margin-left:0;}
+  .dtq .fb{margin-left:0;}
+}
+</style>
+
+<div class="topbar">
+  <div class="wrap" style="display:flex; align-items:center; gap:16px; padding:0;">
+    <div class="brand"><span>&lt;/&gt;</span> Variables Practice</div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">0 / 14 checked</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="header">
+    <p class="eyebrow">Computer Science &middot; Pseudocode</p>
+    <h1>Declaring Variables &amp; Constants — Practice</h1>
+    <p class="sub">Work through each question on your own first. When you're ready to check your work, click <strong>Show answer</strong> underneath it — try not to peek before you've written something.</p>
+    <div class="howto"><b>How to use this page:</b> type your pseudocode into the box under each question (it saves automatically as you go), then reveal the answer to compare. There isn't always only one "correct" wording — as long as your structure matches, you've got it right.</div>
+  </div>
+
+  <details class="ref">
+    <summary>Quick reference — syntax reminder</summary>
+    <div class="ref-body">
+      <div class="ref-code">
+        <div><b>DECLARE</b> &lt;name&gt; : &lt;data type&gt; &nbsp;— creates a variable</div>
+        <div>&lt;name&gt; <b>&larr;</b> &lt;value&gt; &nbsp;— assigns a value to it</div>
+        <div><span class="g">CONSTANT</span> &lt;Identifier&gt; <b>&larr;</b> &lt;Value&gt; &nbsp;— creates a fixed value, in one line</div>
+      </div>
+      <div class="dt-row">
+        <span class="dt-chip i">INTEGER — 10, -5, 0</span>
+        <span class="dt-chip r">REAL — 3.14, -7.5</span>
+        <span class="dt-chip s">STRING — "Hello"</span>
+        <span class="dt-chip c">CHAR — 'A', '$'</span>
+        <span class="dt-chip b">BOOLEAN — TRUE / FALSE</span>
+      </div>
+    </div>
+  </details>
+
+  <!-- PART A -->
+  <section id="partA">
+    <h2 class="part-heading">Part A — Data Type Check <span class="n">warm-up</span></h2>
+    <p class="part-intro">Pick the correct data type for each value from the dropdown.</p>
+
+    <div class="dtq" data-answer="INTEGER"><span class="val">42</span>
+      <select><option value="">choose data type…</option><option>INTEGER</option><option>REAL</option><option>STRING</option><option>CHAR</option><option>BOOLEAN</option></select>
+      <span class="fb"></span>
+    </div>
+    <div class="dtq" data-answer="STRING"><span class="val">"Curitiba"</span>
+      <select><option value="">choose data type…</option><option>INTEGER</option><option>REAL</option><option>STRING</option><option>CHAR</option><option>BOOLEAN</option></select>
+      <span class="fb"></span>
+    </div>
+    <div class="dtq" data-answer="REAL"><span class="val">3.14159</span>
+      <select><option value="">choose data type…</option><option>INTEGER</option><option>REAL</option><option>STRING</option><option>CHAR</option><option>BOOLEAN</option></select>
+      <span class="fb"></span>
+    </div>
+    <div class="dtq" data-answer="CHAR"><span class="val">'F'</span>
+      <select><option value="">choose data type…</option><option>INTEGER</option><option>REAL</option><option>STRING</option><option>CHAR</option><option>BOOLEAN</option></select>
+      <span class="fb"></span>
+    </div>
+    <div class="dtq" data-answer="BOOLEAN"><span class="val">FALSE</span>
+      <select><option value="">choose data type…</option><option>INTEGER</option><option>REAL</option><option>STRING</option><option>CHAR</option><option>BOOLEAN</option></select>
+      <span class="fb"></span>
+    </div>
+  </section>
+
+  <!-- PART B -->
+  <section id="partB">
+    <h2 class="part-heading">Part B — Declaring Variables</h2>
+
+    <div class="q-card" data-qid="b1">
+      <div class="q-head"><span class="q-num">1.</span><span class="q-text">Declare a variable to store a person's height as a decimal number. What data type should you use? Write the pseudocode.</span></div>
+      <textarea class="ans" data-qid="b1" placeholder="Write your pseudocode here…"></textarea>
+      <div class="q-actions"><button class="reveal-btn" data-target="b1">Show answer</button><span class="try-note">try it before you check!</span></div>
+      <div class="answer-panel" id="ans-b1" hidden><span class="lbl">Model answer</span>DECLARE Height : REAL</div>
+    </div>
+
+    <div class="q-card" data-qid="b2">
+      <div class="q-head"><span class="q-num">2.</span><span class="q-text">Write pseudocode to:</span></div>
+      <ol class="q-sub">
+        <li>Declare a variable to store a student's grade as a single letter.</li>
+        <li>Assign it the value 'B'.</li>
+      </ol>
+      <textarea class="ans" data-qid="b2" placeholder="Write your pseudocode here…"></textarea>
+      <div class="q-actions"><button class="reveal-btn" data-target="b2">Show answer</button><span class="try-note">try it before you check!</span></div>
+      <div class="answer-panel" id="ans-b2" hidden><span class="lbl">Model answer</span>DECLARE Grade : CHAR
+Grade &larr; 'B'</div>
+    </div>
+
+    <div class="q-card" data-qid="b3">
+      <div class="q-head"><span class="q-num">3.</span><span class="q-text">Create a pseudocode program to:</span></div>
+      <ol class="q-sub">
+        <li>Store your age.</li>
+        <li>Calculate your age in 10 years.</li>
+        <li>Output the result.</li>
+      </ol>
+      <div class="q-hint">Hint: to calculate a new value from an existing one, assign a variable using an expression, e.g. NewAge &larr; Age + 10</div>
+      <textarea class="ans" data-qid="b3" placeholder="Write your pseudocode here…"></textarea>
+      <div class="q-actions"><button class="reveal-btn" data-target="b3">Show answer</button><span class="try-note">try it before you check!</span></div>
+      <div class="answer-panel" id="ans-b3" hidden><span class="lbl">Model answer — your age will differ, that's fine</span>DECLARE Age : INTEGER
+Age &larr; 15
+NewAge &larr; Age + 10
+OUTPUT "In 10 years I will be ", NewAge</div>
+    </div>
+
+    <div class="q-card" data-qid="b4">
+      <div class="q-head"><span class="q-num">4.</span><span class="q-text">Write pseudocode to:</span></div>
+      <ol class="q-sub">
+        <li>Declare a variable to store a string containing a person's name.</li>
+        <li>Display the message: "Welcome, &lt;name&gt;!"</li>
+      </ol>
+      <textarea class="ans" data-qid="b4" placeholder="Write your pseudocode here…"></textarea>
+      <div class="q-actions"><button class="reveal-btn" data-target="b4">Show answer</button><span class="try-note">try it before you check!</span></div>
+      <div class="answer-panel" id="ans-b4" hidden><span class="lbl">Model answer</span>DECLARE Name : STRING
+Name &larr; "Fabio"
+OUTPUT "Welcome, ", Name, "!"</div>
+    </div>
+
+    <div class="q-card" data-qid="b5">
+      <div class="q-head"><span class="q-num">5.</span><span class="q-text">Declare a variable to check if a car is available (TRUE or FALSE). Assign it the value TRUE. What data type should you use? Write the pseudocode.</span></div>
+      <textarea class="ans" data-qid="b5" placeholder="Write your pseudocode here…"></textarea>
+      <div class="q-actions"><button class="reveal-btn" data-target="b5">Show answer</button><span class="try-note">try it before you check!</span></div>
+      <div class="answer-panel" id="ans-b5" hidden><span class="lbl">Model answer</span>DECLARE CarAvailable : BOOLEAN
+CarAvailable &larr; TRUE</div>
+    </div>
+  </section>
+
+  <!-- PART C -->
+  <section id="partC">
+    <h2 class="part-heading">Part C — Working with Constants</h2>
+
+    <div class="q-card" data-qid="c1">
+      <div class="q-head"><span class="q-num">6.</span><span class="q-text">A school lesson period always lasts exactly 50 minutes, and this should never change in your program. Declare this as a constant.</span></div>
+      <textarea class="ans" data-qid="c1" placeholder="Write your pseudocode here…"></textarea>
+      <div class="q-actions"><button class="reveal-btn" data-target="c1">Show answer</button><span class="try-note">try it before you check!</span></div>
+      <div class="answer-panel" id="ans-c1" hidden><span class="lbl">Model answer</span>CONSTANT LessonLength &larr; 50</div>
+    </div>
+
+    <div class="q-card" data-qid="c2">
+      <div class="q-head"><span class="q-num">7.</span><span class="q-text">Write pseudocode for a constant that stores the value of Pi as 3.14159.</span></div>
+      <textarea class="ans" data-qid="c2" placeholder="Write your pseudocode here…"></textarea>
+      <div class="q-actions"><button class="reveal-btn" data-target="c2">Show answer</button><span class="try-note">try it before you check!</span></div>
+      <div class="answer-panel" id="ans-c2" hidden><span class="lbl">Model answer</span>CONSTANT Pi &larr; 3.14159</div>
+    </div>
+
+    <div class="q-card" data-qid="c3">
+      <div class="q-head"><span class="q-num">8.</span><span class="q-text">A programmer stores a cinema ticket price using CONSTANT TicketPrice &larr; 5.50. In one or two sentences, explain why this should be a constant rather than an ordinary variable.</span></div>
+      <textarea class="ans" data-qid="c3" placeholder="Write your explanation here…"></textarea>
+      <div class="q-actions"><button class="reveal-btn" data-target="c3">Show answer</button><span class="try-note">try it before you check!</span></div>
+      <div class="answer-panel prose" id="ans-c3" hidden><span class="lbl">Model answer</span>Because the price is fixed and should never accidentally change while the program is running, it needs to be locked as a constant rather than left as an editable variable — this avoids mistakes and makes the code easier to read.</div>
+    </div>
+  </section>
+
+  <!-- PART D -->
+  <section id="partD">
+    <h2 class="part-heading">Part D — Challenge</h2>
+    <div class="q-card" data-qid="d1">
+      <div class="q-head"><span class="q-num">9.</span><span class="q-text">A school canteen sells a set-price lunch. The price never changes and is always $12.50. Write a short pseudocode program that:</span></div>
+      <ol class="q-sub">
+        <li>declares the lunch price as a constant;</li>
+        <li>declares a variable to store how many lunches a pupil buys today, and assigns it the value 2;</li>
+        <li>outputs a message that includes the number of lunches bought.</li>
+      </ol>
+      <textarea class="ans" data-qid="d1" placeholder="Write your pseudocode here…" style="min-height:110px"></textarea>
+      <div class="q-actions"><button class="reveal-btn" data-target="d1">Show answer</button><span class="try-note">try it before you check!</span></div>
+      <div class="answer-panel" id="ans-d1" hidden><span class="lbl">Model answer</span>CONSTANT LunchPrice &larr; 12.50
+DECLARE LunchesBought : INTEGER
+LunchesBought &larr; 2
+OUTPUT "Lunches bought: ", LunchesBought</div>
+    </div>
+  </section>
+
+  <div class="finish">
+    <h2>Nice work!</h2>
+    <p>If any answer surprised you, go back to the study guide card that covers it before moving on.</p>
+    <div class="util-row">
+      <button class="util-btn" id="revealAll">Show all answers</button>
+      <button class="util-btn" id="resetAll">Clear my answers</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var STORE_PREFIX = 'varworksheet-';
+  function safeGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function safeSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  function safeRemove(k){ try{ localStorage.removeItem(k); }catch(e){} }
+
+  // ---- textareas: restore + autosave ----
+  var textareas = Array.prototype.slice.call(document.querySelectorAll('textarea.ans'));
+  textareas.forEach(function(t){
+    var key = STORE_PREFIX + 'text-' + t.dataset.qid;
+    var saved = safeGet(key);
+    if(saved) t.value = saved;
+    t.addEventListener('input', function(){ safeSet(key, t.value); });
+  });
+
+  // ---- reveal buttons ----
+  var revealButtons = Array.prototype.slice.call(document.querySelectorAll('.reveal-btn'));
+  var totalReveals = revealButtons.length;
+
+  function updateProgress(){
+    var count = document.querySelectorAll('.answer-panel:not([hidden])').length;
+    document.getElementById('progressFill').style.width = ((count/totalReveals)*100) + '%';
+    document.getElementById('progressLabel').textContent = count + ' / ' + totalReveals + ' checked';
+  }
+
+  function reveal(id){
+    var panel = document.getElementById('ans-' + id);
+    var btn = document.querySelector('.reveal-btn[data-target="' + id + '"]');
+    var card = document.querySelector('.q-card[data-qid="' + id + '"]');
+    if(!panel) return;
+    panel.hidden = false;
+    if(btn) btn.textContent = 'Hide answer';
+    if(card) card.classList.add('done');
+    safeSet(STORE_PREFIX + 'revealed-' + id, '1');
+    updateProgress();
+  }
+  function hide(id){
+    var panel = document.getElementById('ans-' + id);
+    var btn = document.querySelector('.reveal-btn[data-target="' + id + '"]');
+    var card = document.querySelector('.q-card[data-qid="' + id + '"]');
+    if(!panel) return;
+    panel.hidden = true;
+    if(btn) btn.textContent = 'Show answer';
+    if(card) card.classList.remove('done');
+    safeRemove(STORE_PREFIX + 'revealed-' + id);
+    updateProgress();
+  }
+
+  revealButtons.forEach(function(btn){
+    var id = btn.dataset.target;
+    btn.addEventListener('click', function(){
+      var panel = document.getElementById('ans-' + id);
+      if(panel.hidden) reveal(id); else hide(id);
+    });
+    if(safeGet(STORE_PREFIX + 'revealed-' + id) === '1') reveal(id);
+  });
+  updateProgress();
+
+  document.getElementById('revealAll').addEventListener('click', function(){
+    revealButtons.forEach(function(btn){ reveal(btn.dataset.target); });
+  });
+  document.getElementById('resetAll').addEventListener('click', function(){
+    if(!confirm("Clear everything you've typed and hide all answers on this page?")) return;
+    textareas.forEach(function(t){ t.value=''; safeRemove(STORE_PREFIX + 'text-' + t.dataset.qid); });
+    revealButtons.forEach(function(btn){ hide(btn.dataset.target); });
+    document.querySelectorAll('.dtq select').forEach(function(s){ s.value=''; });
+    document.querySelectorAll('.dtq .fb').forEach(function(f){ f.textContent=''; f.className='fb'; });
+  });
+
+  // ---- Part A dropdown check ----
+  document.querySelectorAll('.dtq').forEach(function(row){
+    var select = row.querySelector('select');
+    var fb = row.querySelector('.fb');
+    var correct = row.dataset.answer;
+    select.addEventListener('change', function(){
+      if(!select.value){ fb.textContent=''; fb.className='fb'; return; }
+      if(select.value === correct){ fb.textContent = '✓ correct'; fb.className = 'fb correct'; }
+      else { fb.textContent = '✗ try again'; fb.className = 'fb wrong'; }
+    });
+  });
+})();
+</script>
